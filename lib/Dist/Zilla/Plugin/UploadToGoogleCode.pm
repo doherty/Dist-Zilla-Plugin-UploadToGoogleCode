@@ -1,43 +1,20 @@
 package Dist::Zilla::Plugin::UploadToGoogleCode;
 use strict;
 use warnings;
-# ABSTRACT: upload your dist to Google Code
+# ABSTRACT: upload your dist to Google Code (experimental)
 # VERSION
 use Moose;
 with qw(Dist::Zilla::Role::BeforeRelease Dist::Zilla::Role::Releaser);
 
-use Google::Code::Upload qw(upload);
 use Moose::Util::TypeConstraints;
-use Scalar::Util qw(weaken);
 use Try::Tiny;
 use namespace::autoclean;
 
+=for Pod::Coverage mvp_multivalue_args
 
-has credentials_stash => (
-    is  => 'ro',
-    isa => 'Str',
-    default => '%GoogleCode'
-);
+=cut
 
-has _credentials_stash_obj => (
-    is   => 'ro',
-    isa  => maybe_type( class_type('Dist::Zilla::Stash::GoogleCode') ),
-    lazy => 1,
-    init_arg => undef,
-    default  => sub { $_[0]->zilla->stash_named( $_[0]->credentials_stash ) },
-);
-
-sub _credential {
-    my ($self, $name) = @_;
-
-    return unless my $stash = $self->_credentials_stash_obj;
-    return $stash->$name;
-}
-
-sub mvp_aliases {
-    return { user => 'username' };
-}
-
+sub mvp_multivalue_args { qw(labels) }
 
 has username => (
     is   => 'ro',
@@ -46,12 +23,10 @@ has username => (
     required => 1,
     default  => sub {
         my ($self) = @_;
-        return $self->_credential('username')
-            || $self->googlecode_cfg->{username}
+        return $self->googlecode_cfg->{username}
             || $self->zilla->chrome->prompt_str('Google code username: ');
     },
 );
-
 
 has password => (
     is   => 'ro',
@@ -60,8 +35,7 @@ has password => (
     required => 1,
     default  => sub {
         my ($self) = @_;
-        return $self->_credential('password')
-            || $self->googlecode_cfg->{password}
+        return $self->googlecode_cfg->{password}
             || $self->zilla->chrome->prompt_str(
                 'Google Code password (from https://code.google.com/hosting/settings): ',
                 { noecho => 1 }
@@ -74,10 +48,7 @@ has project => (
     isa => 'Str',
     lazy => 1,
     required => 1,
-    default => sub {
-        my ($self) = @_;
-        return $self->name;
-    },
+    default => sub { $_[0]->payload->{project} || lc $_[0]->zilla->name },
 );
 
 has labels => (
@@ -85,7 +56,7 @@ has labels => (
     isa => 'ArrayRef[Str]',
     lazy => 1,
     required => 1,
-    default => sub { [qw( Type-Archive )] },
+    default => sub { [qw( Featured Type-Archive OpSys-All )] },
 );
 
 has googlecode_cfg => (
@@ -100,33 +71,107 @@ has googlecode_cfg => (
     },
 );
 
+has uploader => (
+    is      => 'ro',
+    isa     => 'Google::Code::Upload',
+    handles => [qw/upload/],
+    lazy    => 1,
+    default => sub {
+        my ($self) = @_;
+        require Google::Code::Upload;
+        return Google::Code::Upload->new(
+            project  => $self->project,
+            username => $self->username,
+            password => $self->password,
+        );
+    },
+);
+
+has summary => (
+    is  => 'ro',
+    isa => 'Str',
+    required => 1,
+    lazy => 1,
+    default => sub {
+        my ($self) = @_;
+        $self->zilla->name . '-' . $self->zilla->version . ': ' . $self->zilla->abstract
+    },
+);
+
+has changelog => (
+    is  => 'ro',
+    isa => 'Str',
+    default => 'Changes',
+    predicate => 'has_changelog',
+);
+
+has description => (
+    is => 'ro',
+    isa => 'Str',
+    lazy => 1,
+    default => sub {
+        my ($self) = @_;
+        return unless $self->has_changelog;
+
+        my $last_release = try {
+            $self->zilla->ensure_built_in;
+
+            require File::pushd;
+            my $wd = File::pushd::pushd( $self->zilla->built_in );
+
+            require Dist::Zilla::File::OnDisk;
+            my $changelog_content = Dist::Zilla::File::OnDisk->new({ name => $self->changelog })->content;
+
+            require CPAN::Changes;
+            my $changelog = CPAN::Changes->load_string( $changelog_content );
+            my @releases  = $changelog->releases;
+            pop @releases;
+        }
+        catch {
+            warn $_;
+            return;
+        };
+
+        return $last_release->serialize;
+    },
+);
+
+=head1 METHODS
+
+=head2 before_release
+
+Checks that we have the data we need to release.
+
+=cut
+
 sub before_release {
     my $self = shift;
-    die $self->project;
 
     $self->$_ || $self->log_fatal("You need to supply a $_")
         for qw(username password project);
 }
 
+=head2 release
+
+Performs the release using L<Google::Code::Upload>.
+
+=cut
+
 sub release {
     my ($self, $archive) = @_;
 
-    my ($status, $reason, $url) = upload(
-        "$archive",
-        $self->project,
-        $self->username,
-        $self->password,
-        'test',
-        $self->labels
-    );
-
-    if ($url) {
+    try {
+        my $url = $self->upload(
+            file        => "$archive",
+            summary     => $self->summary,
+            labels      => $self->labels,
+            ( $self->description ? (description => $self->description) : ()),
+        );
         $self->log("Uploaded to $url");
     }
-    else {
-        $self->log('An error occurred, and your file was not uploaded.');
-        $self->log("The Google Code server said: $reason ($status)");
-    }
+    catch {
+        $self->log("The file wasn't uploaded: $_");
+    };
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -136,6 +181,10 @@ __PACKAGE__->meta->make_immutable;
 =head1 SYNOPSIS
 
 If loaded, this plugin will allow the F<release> command to upload to Google Code.
+
+=for test_synopsis
+1;
+__END__
 
 =head1 DESCRIPTION
 

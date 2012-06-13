@@ -1,0 +1,65 @@
+NAME
+    Dist::Zilla::Plugin::UploadToGoogleCode - upload your dist to Google
+    Code
+
+VERSION
+    version 0.001
+
+SYNOPSIS
+    If loaded, this plugin will allow the release command to upload to
+    Google Code.
+
+DESCRIPTION
+    This plugin looks for the Google Code project name in dist.ini, and gets
+    your Google Code credentials from ~/.googlecode-identity (which can be
+    GnuPG-encrypted; see Config::Identity).
+
+    If any configuration is missing, it will prompt you to enter your
+    username and password during the BeforeRelease phase. Entering a blank
+    username or password will abort the release.
+
+METHODS
+  before_release
+    Checks that we have the data we need to release.
+
+  release
+    Performs the release using Google::Code::Upload.
+
+ATTRIBUTES
+  username
+    This option supplies the user's Google Code username. If not supplied,
+    it will be looked for in the user's GoogleCode configuration.
+
+  password
+    This option supplies the user's Google Code password (ie, from
+    <https://code.google.com/hosting/settings>). If not supplied, it will be
+    looked for in the user's GoogleCode configuration.
+
+  googlecode_cfg
+    This is a hashref of defaults loaded from ~/.googlecode-identity.
+
+AVAILABILITY
+    The latest version of this module is available from the Comprehensive
+    Perl Archive Network (CPAN). Visit <http://www.perl.com/CPAN/> to find a
+    CPAN site near you, or see
+    <https://metacpan.org/module/Dist::Zilla::Plugin::UploadToGoogleCode/>.
+
+SOURCE
+    The development version is on github at
+    <http://github.com/doherty/Dist-Zilla-Plugin-UploadToGoogleCode> and may
+    be cloned from
+    <git://github.com/doherty/Dist-Zilla-Plugin-UploadToGoogleCode.git>
+
+BUGS AND LIMITATIONS
+    You can make new bug reports, and view existing ones, through the web
+    interface at <http://rt.cpan.org>.
+
+AUTHOR
+    Mike Doherty <doherty@cpan.org>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2012 by Mike Doherty.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+
