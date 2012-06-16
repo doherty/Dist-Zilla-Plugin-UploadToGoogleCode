@@ -15,12 +15,12 @@ my %module_build_args = (
   "configure_requires" => {
     "Module::Build" => "0.3601"
   },
-  "dist_abstract" => "upload your dist to Google Code",
+  "dist_abstract" => "upload your dist to Google Code (experimental)",
   "dist_author" => [
     "Mike Doherty <doherty\@cpan.org>"
   ],
   "dist_name" => "Dist-Zilla-Plugin-UploadToGoogleCode",
-  "dist_version" => "0.001",
+  "dist_version" => "0.002",
   "license" => "perl",
   "module_name" => "Dist::Zilla::Plugin::UploadToGoogleCode",
   "recommends" => {},

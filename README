@@ -1,9 +1,9 @@
 NAME
     Dist::Zilla::Plugin::UploadToGoogleCode - upload your dist to Google
-    Code
+    Code (experimental)
 
 VERSION
-    version 0.001
+    version 0.002
 
 SYNOPSIS
     If loaded, this plugin will allow the release command to upload to

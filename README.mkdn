@@ -1,10 +1,10 @@
 # NAME
 
-Dist::Zilla::Plugin::UploadToGoogleCode - upload your dist to Google Code
+Dist::Zilla::Plugin::UploadToGoogleCode - upload your dist to Google Code (experimental)
 
 # VERSION
 
-version 0.001
+version 0.002
 
 # SYNOPSIS
 
