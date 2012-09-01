@@ -31,7 +31,7 @@ my %WriteMakefileArgs = (
     "Dist::Zilla::Role::BeforeRelease" => 0,
     "Dist::Zilla::Role::Releaser" => 0,
     "File::pushd" => 0,
-    "Google::Code::Upload" => 0,
+    "Google::Code::Upload" => "0.006",
     "Moose" => 0,
     "Moose::Util::TypeConstraints" => 0,
     "Try::Tiny" => 0,
@@ -39,7 +39,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.002",
+  "VERSION" => "0.003",
   "test" => {
     "TESTS" => "t/*.t"
   }

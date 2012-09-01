@@ -20,7 +20,7 @@ my %module_build_args = (
     "Mike Doherty <doherty\@cpan.org>"
   ],
   "dist_name" => "Dist-Zilla-Plugin-UploadToGoogleCode",
-  "dist_version" => "0.002",
+  "dist_version" => "0.003",
   "license" => "perl",
   "module_name" => "Dist::Zilla::Plugin::UploadToGoogleCode",
   "recommends" => {},
@@ -32,7 +32,7 @@ my %module_build_args = (
     "Dist::Zilla::Role::BeforeRelease" => 0,
     "Dist::Zilla::Role::Releaser" => 0,
     "File::pushd" => 0,
-    "Google::Code::Upload" => 0,
+    "Google::Code::Upload" => "0.006",
     "Moose" => 0,
     "Moose::Util::TypeConstraints" => 0,
     "Try::Tiny" => 0,

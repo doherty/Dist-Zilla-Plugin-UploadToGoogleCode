@@ -3,7 +3,7 @@ NAME
     Code (experimental)
 
 VERSION
-    version 0.002
+    version 0.003
 
 SYNOPSIS
     If loaded, this plugin will allow the release command to upload to
@@ -52,7 +52,9 @@ SOURCE
 
 BUGS AND LIMITATIONS
     You can make new bug reports, and view existing ones, through the web
-    interface at <http://rt.cpan.org>.
+    interface at
+    <https://github.com/doherty/Dist-Zilla-Plugin-UploadToGoogleCode/issues>
+    .
 
 AUTHOR
     Mike Doherty <doherty@cpan.org>
