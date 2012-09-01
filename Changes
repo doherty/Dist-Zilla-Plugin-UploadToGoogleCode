@@ -1,6 +1,7 @@
 Revision history for Perl module {{$dist->name}}
 
 {{$NEXT}}
+  - Require Google::Code::Upload version 0.006
 
 0.002     2012-06-16
   - Initial, totally experimental, release

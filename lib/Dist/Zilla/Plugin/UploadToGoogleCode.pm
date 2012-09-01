@@ -79,6 +79,7 @@ has uploader => (
     default => sub {
         my ($self) = @_;
         require Google::Code::Upload;
+        Google::Code::Upload->VERSION(0.006);
         return Google::Code::Upload->new(
             project  => $self->project,
             username => $self->username,
