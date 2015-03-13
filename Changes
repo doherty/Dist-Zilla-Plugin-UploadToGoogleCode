@@ -1,6 +1,8 @@
 Revision history for Perl module {{$dist->name}}
 
 {{$NEXT}}
+
+0.004     2015-03-12
   - Mark as deprecated: http://google-opensource.blogspot.com/2015/03/farewell-to-google-code.html
 
 0.003     2012-09-01

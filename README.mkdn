@@ -1,12 +1,14 @@
 # NAME
 
-Dist::Zilla::Plugin::UploadToGoogleCode - upload your dist to Google Code (experimental)
+Dist::Zilla::Plugin::UploadToGoogleCode - upload your dist to Google Code (deprecated)
 
 # VERSION
 
-version 0.003
+version 0.004
 
 # SYNOPSIS
+
+**DEPRECATED**: Google code [shut down](http://google-opensource.blogspot.com/2015/03/farewell-to-google-code.html)
 
 If loaded, this plugin will allow the `release` command to upload to Google Code.
 
@@ -14,7 +16,7 @@ If loaded, this plugin will allow the `release` command to upload to Google Code
 
 This plugin looks for the Google Code project name in `dist.ini`, and gets your
 Google Code credentials from `~/.googlecode-identity` (which can be
-GnuPG-encrypted; see [Config::Identity](http://search.cpan.org/perldoc?Config::Identity)).
+GnuPG-encrypted; see [Config::Identity](https://metacpan.org/pod/Config::Identity)).
 
 If any configuration is missing, it will prompt you to enter your
 username and password during the BeforeRelease phase.  Entering a
@@ -28,7 +30,7 @@ Checks that we have the data we need to release.
 
 ## release
 
-Performs the release using [Google::Code::Upload](http://search.cpan.org/perldoc?Google::Code::Upload).
+Performs the release using [Google::Code::Upload](https://metacpan.org/pod/Google::Code::Upload).
 
 # ATTRIBUTES
 
@@ -48,6 +50,8 @@ looked for in the user's GoogleCode configuration.
 This is a hashref of defaults loaded from `~/.googlecode-identity`.
 
 # AVAILABILITY
+
+The project homepage is [http://metacpan.org/release/Dist-Zilla-Plugin-UploadToGoogleCode/](http://metacpan.org/release/Dist-Zilla-Plugin-UploadToGoogleCode/).
 
 The latest version of this module is available from the Comprehensive Perl
 Archive Network (CPAN). Visit [http://www.perl.com/CPAN/](http://www.perl.com/CPAN/) to find a CPAN
