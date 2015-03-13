@@ -1,7 +1,7 @@
 package Dist::Zilla::Plugin::UploadToGoogleCode;
 use strict;
 use warnings;
-# ABSTRACT: upload your dist to Google Code (experimental)
+# ABSTRACT: upload your dist to Google Code (deprecated)
 # VERSION
 use Moose;
 with qw(Dist::Zilla::Role::BeforeRelease Dist::Zilla::Role::Releaser);
@@ -180,6 +180,8 @@ __PACKAGE__->meta->make_immutable;
 1;
 
 =head1 SYNOPSIS
+
+B<DEPRECATED>: Google code L<shut down|http://google-opensource.blogspot.com/2015/03/farewell-to-google-code.html>
 
 If loaded, this plugin will allow the F<release> command to upload to Google Code.
 
